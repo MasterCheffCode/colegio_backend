@@ -1,15 +1,12 @@
 package com.study.colegio.calificaciones.controller;
 
-import java.lang.foreign.Linker.Option;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.management.RuntimeErrorException;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
+import com.study.colegio.calificaciones.entity.MateriaEntity;
 import com.study.colegio.calificaciones.entity.QualificationsEntity;
 import com.study.colegio.calificaciones.service.QualificationsService;
 import com.study.colegio.estudiante.entity.StudientEntity;
@@ -36,17 +33,16 @@ public class QualificationsController {
         return qualificationsService.getAllQualificationes();
     }
 
-    @PostMapping("/create_qualifications")
-    public QualificationsEntity createQualifications(@RequestBody Map<String,Object> request) {
+    @PostMapping("/create_qualifications/{documentoIdentidad}")
+    public ResponseEntity<?> createQualifications(@PathVariable String documentoIdentidad,@RequestBody QualificationsEntity request) {
        
-        String documentoIdentidad = (String) request.get("documentoIdentidad");
-        String materia = (String) request.get("materia");
-        Double nota = (Double) request.get("nota"); 
-        Integer periodo = (Integer) request.get("periodo");
-        Integer numeroNota = (Integer) request.get("numeroNota");
+        String materia = request.getMateria().getMateria();
+        Double nota =  request.getNota(); 
+        Integer periodo =  request.getPeriodo();
+        Integer numeroNota =  request.getNumeroNota();
+        Integer totalNotas =  request.getMateria().getNotasTotal();
         
         Optional<StudientEntity> studientOpt = studientService.findStudientByDocumento(documentoIdentidad);
-
         if (studientOpt.isEmpty()) {
             throw new RuntimeException( "Estudiante no encontrado con documento de identidad: " + documentoIdentidad);
         }
@@ -54,19 +50,37 @@ public class QualificationsController {
         StudientEntity studient = studientOpt.get();
 
         QualificationsEntity qualification = new QualificationsEntity();
-        qualification.setMateria(materia);
+        qualification.setMateria(new MateriaEntity(null, materia, totalNotas));
         qualification.setNota(nota);
         qualification.setEstudiante(studient);
         qualification.setNumeroNota(numeroNota);
-        qualification.setPeriodo(periodo);
+        qualification.setPeriodo(periodo);        
 
-        return qualificationsService.saveQualifications(qualification);
+        try{
+            QualificationsEntity result = qualificationsService.saveQualifications(qualification);
+            return ResponseEntity.ok(result);
+        } catch(RuntimeException e){
+        
+            if ("Se ha alcanzado el limite notas por este periodo".equals(e.getMessage())) {
+                List<QualificationsEntity> quals = qualificationsService.getQualificationsByDocumento(documentoIdentidad);
+
+                return ResponseEntity.badRequest().body(Map.of("mensaje",e.getMessage(),"PromedioFinal",qualificationsService.qualificationFinal(quals)));
+            }
+            throw e;
+        }
+
     }
 
     @GetMapping("/{documentoIdentidad}")
-    public List<QualificationsEntity> getQualificationsByDocumento(@PathVariable String documentoIdentidad) {
-        return qualificationsService.getQualificationsByDocumento(documentoIdentidad);
+    public List<Map<String,Object>> getQualificationsByDocumento(@PathVariable String documentoIdentidad) {
+
+        List<QualificationsEntity> quals = qualificationsService.getQualificationsByDocumento(documentoIdentidad);
+    
+        return qualificationsService.mappeQualifications(quals);
     }
+
+
+        
 
     @GetMapping("/student_with_qualifications/{documentoIdentidad}")
     public Map<String, Object> getStudentWithQualifications(@PathVariable String documentoIdentidad) {
