@@ -20,6 +20,10 @@ public class StudientService {
         return studientRepository.findAll();
     }
 
+    public Optional<StudientEntity> findStudientByDocumento(String documentoIdentidad){
+        return studientRepository.findByDocumentoIdentidad(documentoIdentidad);
+    }
+
     public StudientEntity saveStudient(StudientEntity studientEntity){
         return studientRepository.save(studientEntity);
     }
@@ -29,11 +33,12 @@ public class StudientService {
 
         if (studientExistenOp.isPresent()) {
             StudientEntity studientExist = studientExistenOp.get();
-            
-            studientExist.setNombres(studientEdit.getNombres());
-            studientExist.setApellidos(studientEdit.getApellidos());
-            studientExist.setEdad(studientEdit.getEdad());
+
             studientExist.setDocumentoIdentidad(documentoIdentidad);
+            studientExist.setNombre(studientEdit.getNombre());
+            studientExist.setApellido(studientEdit.getApellido());
+            studientExist.setCurso(studientEdit.getCurso());
+            studientExist.setEdad(studientEdit.getEdad());
             return studientRepository.save(studientExist);
         }else{
             throw new RuntimeException("Studiante no encontrado con documentoIdentidad: " + documentoIdentidad);

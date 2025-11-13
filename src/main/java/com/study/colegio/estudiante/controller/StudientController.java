@@ -6,6 +6,9 @@ import com.study.colegio.estudiante.entity.StudientEntity;
 import com.study.colegio.estudiante.service.StudientService;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -21,6 +24,11 @@ public class StudientController {
     @GetMapping("/get_studients")
     public List<StudientEntity> getStudients() {
         return studientService.getAllStudients();
+    }
+    
+    @GetMapping("/{documentoIdentidad}")
+    public StudientEntity getStudientByDocumento(@PathVariable String documentoIdentidad) {
+        return studientService.findStudientByDocumento(documentoIdentidad).orElseThrow(()-> new RuntimeException("Estudiante no encontrado"));
     }
     
 
