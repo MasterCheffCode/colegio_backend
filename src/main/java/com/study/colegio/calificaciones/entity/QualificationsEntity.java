@@ -16,7 +16,6 @@ public class QualificationsEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String materia;
     private Double nota;
     
     private Integer periodo;
@@ -27,5 +26,9 @@ public class QualificationsEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "estudiantes_documento_identidad")
     private StudientEntity estudiante;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "materia_id")
+    private MateriaEntity materia;
 
 }
