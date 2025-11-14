@@ -1,4 +1,4 @@
-package com.study.colegio.calificaciones.entity;
+package com.study.colegio.calificaciones.repository.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

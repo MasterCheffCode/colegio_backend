@@ -2,12 +2,12 @@ package com.study.colegio.estudiante.controller;
 
 import org.springframework.web.bind.annotation.*;
 
-import com.study.colegio.estudiante.entity.StudientEntity;
+import com.study.colegio.estudiante.controller.dto.StudientDTO;
+import com.study.colegio.estudiante.repository.entity.StudientEntity;
 import com.study.colegio.estudiante.service.StudientService;
 
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -21,32 +21,24 @@ public class StudientController {
         this.studientService = studientService;
     }
 
-    @GetMapping("/get_studients")
-    public List<StudientEntity> getStudients() {
+    @GetMapping
+    public List<StudientDTO> getStudients() {
         return studientService.getAllStudients();
     }
     
     @GetMapping("/{documentoIdentidad}")
-    public StudientEntity getStudientByDocumento(@PathVariable String documentoIdentidad) {
-        return studientService.findStudientByDocumento(documentoIdentidad).orElseThrow(()-> new RuntimeException("Estudiante no encontrado"));
+    public StudientDTO getStudientByDocumento(@PathVariable Long documentoIdentidad) {
+        return studientService.findStudientByDocumento(documentoIdentidad);
     }
     
 
-    @PostMapping("/create_studient")
-    public StudientEntity createStudient(@RequestBody StudientEntity studient) {
+    @PostMapping
+    public StudientDTO createStudient(@RequestBody StudientDTO studient) {
         
         return studientService.saveStudient(studient);
     }
 
-    @PutMapping("/{documentoIdentidad}")
-    public StudientEntity updateStudient(@PathVariable String documentoIdentidad,@RequestBody StudientEntity studient) {
-        return studientService.editStudient(documentoIdentidad, studient);
-    }
-
-    @DeleteMapping("/{documentoIdentidad}")
-    public void deleteStudient(@PathVariable String documentoIdentidad) {
-        studientService.deleteStudient(documentoIdentidad);
-    }
+  
     
     
 }
