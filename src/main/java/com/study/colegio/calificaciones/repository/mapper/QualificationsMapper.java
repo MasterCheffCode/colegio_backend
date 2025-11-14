@@ -14,7 +14,6 @@ public class QualificationsMapper {
         }
 
         QualificationsDTO dto = new QualificationsDTO();
-        dto.setId(qualificationsEntity.getId());
         dto.setDocumentoIdentidad(qualificationsEntity.getDocumentoIdentidad());
         dto.setCurso(qualificationsEntity.getCurso());
         dto.setPeriodo(qualificationsEntity.getPeriodo());
@@ -30,7 +29,6 @@ public class QualificationsMapper {
         }
 
         QualificationsEntity entity = new QualificationsEntity();
-        entity.setId(qualificacionsDTO.getId());
         entity.setDocumentoIdentidad(qualificacionsDTO.getDocumentoIdentidad());
         entity.setCurso(qualificacionsDTO.getCurso());
         entity.setPeriodo(qualificacionsDTO.getPeriodo());

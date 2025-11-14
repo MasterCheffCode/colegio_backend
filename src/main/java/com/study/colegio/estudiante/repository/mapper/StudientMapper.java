@@ -15,7 +15,6 @@ public class StudientMapper {
         }
 
         StudientDTO dto = new StudientDTO();
-        dto.setId(studientEntity.getId());
         dto.setDocumentoIdentidad(studientEntity.getDocumentoIdentidad());
         dto.setNombre(studientEntity.getNombre());
         dto.setApellido(studientEntity.getApellido());
@@ -32,7 +31,6 @@ public class StudientMapper {
         }
 
         StudientEntity entity = new StudientEntity();
-        entity.setId(studientDTO.getId());
         entity.setDocumentoIdentidad(studientDTO.getDocumentoIdentidad());
         entity.setNombre(studientDTO.getNombre());
         entity.setApellido(studientDTO.getApellido());

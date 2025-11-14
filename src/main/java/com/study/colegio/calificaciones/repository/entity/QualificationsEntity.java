@@ -14,15 +14,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class QualificationsEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+ 
 
     private Long documentoIdentidad;
 
-    private List<Integer> curso;
-    private List<Integer> periodo;
-    private List<Integer> materia;
-    private List<Integer> nota;
+    private Integer curso;
+    private Integer periodo;
+    private Integer materia;
+    private Integer nota;
 
 }
