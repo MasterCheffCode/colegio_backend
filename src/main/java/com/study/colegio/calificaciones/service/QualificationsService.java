@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.Comparator;
+
+import java.util.LinkedHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,15 +42,14 @@ public class QualificationsService {
     }
 
     public QualificationsEntity saveQualifications(QualificationsEntity qualificationsEntity){
-        // Auto-increment numeroNota per estudiante and periodo
-        Integer maxNumero = qualificationsRepository.findMaxNumeroNotaByDocumentoAndPeriodo(
-            qualificationsEntity.getEstudiante().getDocumentoIdentidad(),
-            qualificationsEntity.getPeriodo()
+        
+        List<QualificationsEntity> maxNumero = qualificationsRepository.qualificacionsByDocumento(
+            qualificationsEntity.getEstudiante().getDocumentoIdentidad()
         );
         
         MateriaEntity materia = materiaRepository.save(qualificationsEntity.getMateria());
-        Integer nextNumero = (maxNumero == null) ? 1 : maxNumero + 1;
-        if (nextNumero <= qualificationsEntity.getMateria().getNotasTotal()) {
+        Integer nextNumero = maxNumero.size() + 1;
+        if (nextNumero >= maxNumero.size()) {
             qualificationsEntity.setNumeroNota(nextNumero);
             return qualificationsRepository.save(qualificationsEntity);
         }else{
@@ -102,8 +104,6 @@ public class QualificationsService {
 
         StudientEntity estudiante = quals.get(0).getEstudiante();
 
-        Double promedioFinal = 0.0;
-        Double notasTotalPromedio = 0.0;
 
         Map<String,List<QualificationsEntity>> byMateria = quals.stream()
         .collect(Collectors.groupingBy(q -> q.getMateria().getMateria()));
@@ -131,25 +131,23 @@ public class QualificationsService {
 
                 matMap.put("nombreMateria", entry.getKey());
 
-                matMap.put("notasTotal", entry.getValue().get(0).getMateria().getNotasTotal());
-
-            Map<String,Object> notasMap = new HashMap<>();
+            Map<String,Object> notasMap = new LinkedHashMap<>();
 
             List<QualificationsEntity> notas = entry.getValue();
-
-            for (int i = 0; i < notas.size(); i++) {
-            QualificationsEntity q = notas.get(i);
+                notas.sort(Comparator.comparing(QualificationsEntity::getNumeroNota));
+            Double notasTotalPromedio = 0.0;
+            for (QualificationsEntity q : notas) {
             Map<String, Object> notaMap = new HashMap<>();
             notaMap.put("nota", q.getNota());
             notaMap.put("periodo", q.getPeriodo());
-            notasMap.put("nota" + (i + 1), notaMap);
-            notasTotalPromedio = notasTotalPromedio + q.getNota();
-            if(entry.getValue().get(0).getMateria().getNotasTotal()==notas.size()){
-                promedioFinal = notasTotalPromedio/ entry.getValue().get(0).getMateria().getNotasTotal();
-            }
+            notasMap.put("nota" + q.getNumeroNota(), notaMap);
+            notasTotalPromedio += q.getNota();
+            
+            
         }
+        Double promedioFinal = notas.size() > 0 ? notasTotalPromedio / notas.size() : 0.0;
+notasMap.put("promedioFinal", promedioFinal);
         matMap.put("notas", notasMap);
-        notasMap.put("promedioFinal", promedioFinal);
         
             item.put("materia", matMap);
             result.add(item);
@@ -175,10 +173,6 @@ public class QualificationsService {
         for (Map.Entry<String,List<QualificationsEntity>> entry : byMateria.entrySet()){
             Map<String,Object> item = new HashMap<>();
 
-            Map<String, Object> matMap = new HashMap<>();
-
-                matMap.put("notasTotal", entry.getValue().get(0).getMateria().getNotasTotal());
-
             Map<String,Object> notasMap = new HashMap<>();
 
             List<QualificationsEntity> notas = entry.getValue();
@@ -186,8 +180,8 @@ public class QualificationsService {
             for (int i = 0; i < notas.size(); i++) {
             QualificationsEntity q = notas.get(i);
             notasTotalPromedio = notasTotalPromedio + q.getNota();
-            if(entry.getValue().get(0).getMateria().getNotasTotal()==notas.size()){
-                promedioFinal = notasTotalPromedio/ entry.getValue().get(0).getMateria().getNotasTotal();
+            if(notas.size() == i){
+                promedioFinal = notasTotalPromedio/ notas.size();
             }
         }
         notasMap.put("materia", entry.getValue().get(0).getMateria());

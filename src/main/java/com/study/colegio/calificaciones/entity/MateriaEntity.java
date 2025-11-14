@@ -21,7 +21,5 @@ public class MateriaEntity {
     private Long id;
 
     private String materia;
-
-    private Integer notasTotal;
     
 }

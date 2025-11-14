@@ -4,7 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import com.study.colegio.calificaciones.entity.MateriaEntity;
 import com.study.colegio.calificaciones.entity.QualificationsEntity;
@@ -40,7 +39,6 @@ public class QualificationsController {
         Double nota =  request.getNota(); 
         Integer periodo =  request.getPeriodo();
         Integer numeroNota =  request.getNumeroNota();
-        Integer totalNotas =  request.getMateria().getNotasTotal();
         
         Optional<StudientEntity> studientOpt = studientService.findStudientByDocumento(documentoIdentidad);
         if (studientOpt.isEmpty()) {
@@ -50,7 +48,7 @@ public class QualificationsController {
         StudientEntity studient = studientOpt.get();
 
         QualificationsEntity qualification = new QualificationsEntity();
-        qualification.setMateria(new MateriaEntity(null, materia, totalNotas));
+        qualification.setMateria(new MateriaEntity(null, materia));
         qualification.setNota(nota);
         qualification.setEstudiante(studient);
         qualification.setNumeroNota(numeroNota);
