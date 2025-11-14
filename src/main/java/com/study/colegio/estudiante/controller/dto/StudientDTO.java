@@ -1,31 +1,30 @@
-package com.study.colegio.estudiante.entity;
+package com.study.colegio.estudiante.controller.dto;
+
+
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-@Entity
-@Table(name = "estudiantes")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudientEntity {
+
+public class StudientDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
-    private String documentoIdentidad;
+    private Long documentoIdentidad;
 
     private String nombre;
 
     private String apellido;
 
-    private String curso;
+    private Integer curso;
 
     private Integer edad;
-
 
 }
