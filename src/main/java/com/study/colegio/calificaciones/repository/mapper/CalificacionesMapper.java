@@ -8,31 +8,31 @@ import org.springframework.stereotype.Component;
 import com.study.colegio.calificaciones.controller.dto.CursoDto;
 import com.study.colegio.calificaciones.controller.dto.MateriaDTO;
 import com.study.colegio.calificaciones.controller.dto.PeriodoDTO;
-import com.study.colegio.calificaciones.controller.dto.QualificationsDTO;
+import com.study.colegio.calificaciones.controller.dto.CalificacionesDTO;
 import com.study.colegio.calificaciones.controller.dto.RequestDTO;
 import com.study.colegio.calificaciones.controller.dto.NotasDTO;
-import com.study.colegio.calificaciones.repository.entity.QualificationsEntity;
+import com.study.colegio.calificaciones.repository.entity.CalificacionesEntity;
 
 @Component
-public class QualificationsMapper {
+public class CalificacionesMapper {
     
-    public QualificationsDTO toDTO(QualificationsEntity qualificationsEntity){
-        if (qualificationsEntity == null) {
+    public CalificacionesDTO toDTO(CalificacionesEntity calificacionesEntity){
+        if (calificacionesEntity == null) {
             return null;
         }
 
-        QualificationsDTO qualificationsDTO = new QualificationsDTO();
+        CalificacionesDTO calificacionesDTO = new CalificacionesDTO();
 
         CursoDto cursoDto = new CursoDto();
         MateriaDTO materiaDTO = new MateriaDTO();
         PeriodoDTO periodoDTO = new PeriodoDTO();
         NotasDTO notasDTO = new NotasDTO();
 
-        cursoDto.setIdCurso(qualificationsEntity.getCurso());
-        materiaDTO.setIdMateria(qualificationsEntity.getMateria());
-        periodoDTO.setIdPeriodo(qualificationsEntity.getPeriodo());
-        notasDTO.setId(qualificationsEntity.getId());
-        notasDTO.setNota(qualificationsEntity.getNota());
+        cursoDto.setIdCurso(calificacionesEntity.getCurso());
+        materiaDTO.setIdMateria(calificacionesEntity.getMateria());
+        periodoDTO.setIdPeriodo(calificacionesEntity.getPeriodo());
+        notasDTO.setId(calificacionesEntity.getId());
+        notasDTO.setNota(calificacionesEntity.getNota());
 
 
         List<NotasDTO> notas = new ArrayList<>();
@@ -50,30 +50,18 @@ public class QualificationsMapper {
         cursoDto.setMaterias(materias);
         cursos.add(cursoDto);
 
-        qualificationsDTO.setCursos(cursos);
+        calificacionesDTO.setCursos(cursos);
         
 
-        return qualificationsDTO;
+        return calificacionesDTO;
     }
 
-    public QualificationsEntity toEntity(NotasDTO qualificacionsDTO){
-        if(qualificacionsDTO == null){
-            return null;
-        }
-
-        QualificationsEntity entity = new QualificationsEntity();
-        entity.setId(qualificacionsDTO.getId());
-        entity.setNota(qualificacionsDTO.getNota()); 
-
-        return entity;
-    }
-
-     public QualificationsEntity requestToEntity(RequestDTO requestDTO){
+     public CalificacionesEntity requestToEntity(RequestDTO requestDTO){
         if(requestDTO == null){
             return null;
         }
 
-        QualificationsEntity entity = new QualificationsEntity();
+        CalificacionesEntity entity = new CalificacionesEntity();
         entity.setDocumentoIdentidad(requestDTO.getIdEstudiante());
         entity.setCurso(requestDTO.getIdCurso());
         entity.setPeriodo(requestDTO.getIdPeriodo());
@@ -83,7 +71,7 @@ public class QualificationsMapper {
         return entity;
     }
 
-     public RequestDTO requestToDTO(QualificationsEntity entity){
+     public RequestDTO requestToDTO(CalificacionesEntity entity){
         if(entity == null){
             return null;
         }

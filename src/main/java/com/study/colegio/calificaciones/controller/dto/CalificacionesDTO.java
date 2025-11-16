@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class QualificationsDTO {
+public class CalificacionesDTO {
     private List<CursoDto> cursos  ;
 }

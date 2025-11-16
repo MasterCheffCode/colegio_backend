@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class QualificationsEntity {
+public class CalificacionesEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
