@@ -17,17 +17,30 @@ public class AgrupadorCalificaciones {
         if (calificacionesEntrada == null || calificacionesEntrada.isEmpty()) {
             return Collections.emptyList();
         }
-
-        CalificacionesDTO resultado = new CalificacionesDTO();
-        Map<Integer, CursoDto> cursoMap = new HashMap<>();
+        Map<Integer, CalificacionesDTO> estudianteMap  = new HashMap<>();
 
         
         for (CalificacionesDTO calificacionesDTO : calificacionesEntrada) {
+            Integer idEstudiante = calificacionesDTO.getIdEstudiante();
+            CalificacionesDTO estudianteAgrupado = estudianteMap.computeIfAbsent(idEstudiante, 
+            id -> {
+                CalificacionesDTO c = new CalificacionesDTO();
+                c.setIdEstudiante(idEstudiante);
+                c.setCursos(new ArrayList<>());
+                return c;
+            }
+            );
+
+            Map<Integer, CursoDto> cursoMap  = estudianteAgrupado.getCursos()
+            .stream()
+            .collect(Collectors.toMap(CursoDto::getIdCurso, c -> c, (a,b) -> a));
+
             for (CursoDto curso : calificacionesDTO.getCursos()) {
                         CursoDto cursoAgrupado = cursoMap.computeIfAbsent(curso.getIdCurso(), id -> {
                             CursoDto c = new CursoDto();
                             c.setIdCurso(id);
                             c.setMaterias(new ArrayList<>());
+                            estudianteAgrupado.getCursos().add(c);
                             return c;
                         }
                 );
@@ -63,7 +76,6 @@ public class AgrupadorCalificaciones {
                             return p;
                         }
                     );
-
                     perAgregado.getCalificaciones().addAll(periodo.getCalificaciones());
                 }
 
@@ -72,7 +84,8 @@ public class AgrupadorCalificaciones {
             
             
         }
-        resultado.setCursos(new ArrayList<>(cursoMap.values()));
-        return List.of(resultado);
+        
+        
+        return new ArrayList<>(estudianteMap.values());
     }
 }

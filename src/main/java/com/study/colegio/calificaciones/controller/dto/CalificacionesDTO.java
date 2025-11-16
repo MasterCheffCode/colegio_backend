@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CalificacionesDTO {
+    private Integer idEstudiante;
     private List<CursoDto> cursos  ;
 }

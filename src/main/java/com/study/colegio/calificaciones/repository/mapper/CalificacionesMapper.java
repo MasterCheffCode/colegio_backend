@@ -28,6 +28,7 @@ public class CalificacionesMapper {
         PeriodoDTO periodoDTO = new PeriodoDTO();
         NotasDTO notasDTO = new NotasDTO();
 
+
         cursoDto.setIdCurso(calificacionesEntity.getCurso());
         materiaDTO.setIdMateria(calificacionesEntity.getMateria());
         periodoDTO.setIdPeriodo(calificacionesEntity.getPeriodo());
@@ -50,6 +51,7 @@ public class CalificacionesMapper {
         cursoDto.setMaterias(materias);
         cursos.add(cursoDto);
 
+        calificacionesDTO.setIdEstudiante(calificacionesEntity.getDocumentoIdentidad());
         calificacionesDTO.setCursos(cursos);
         
 
