@@ -1,5 +1,4 @@
 package com.study.colegio.calificaciones.repository.entity;
-import java.util.List;
 
 
 import jakarta.persistence.*;
@@ -18,11 +17,12 @@ public class QualificationsEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long documentoIdentidad;
+    private Integer documentoIdentidad;
 
-    private List<Integer> curso;
-    private List<Integer> periodo;
-    private List<Integer> materia;
-    private List<Integer> nota;
+    private Integer curso;
+
+    private Integer materia;
+    private Integer periodo;
+    private Double nota;
 
 }

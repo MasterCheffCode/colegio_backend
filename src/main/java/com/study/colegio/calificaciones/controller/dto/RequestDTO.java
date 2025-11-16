@@ -1,7 +1,5 @@
 package com.study.colegio.calificaciones.controller.dto;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class QualificationsDTO {
-    private List<CursoDto> cursos  ;
+public class RequestDTO {
+    private Integer idEstudiante;
+    private Integer idCurso;
+    private Integer idMateria;
+    private Integer idPeriodo;
+    private Double nota;
 }

@@ -9,6 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class QualificationsDTO {
-    private List<CursoDto> cursos  ;
+public class MateriaDTO {
+    
+    private Integer idMateria;
+
+
+    List<PeriodoDTO> periodos;
+
 }

@@ -4,9 +4,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+import com.study.colegio.calificaciones.controller.dto.NotasDTO;
 import com.study.colegio.calificaciones.controller.dto.QualificationsDTO;
+import com.study.colegio.calificaciones.controller.dto.RequestDTO;
 import com.study.colegio.calificaciones.repository.entity.QualificationsEntity;
-import com.study.colegio.calificaciones.repository.mapper.QualificationsMapper;
 import com.study.colegio.calificaciones.service.QualificationsService;
 
 
@@ -25,12 +26,12 @@ public class QualificationsController {
     }
 
     @GetMapping
-    public List<QualificationsEntity> getQualifications() {
+    public List<QualificationsDTO> getQualifications() {
         return qualificationsService.getAllQualificationes();
     }
 
     @PostMapping
-    public QualificationsDTO createQualifications(@RequestBody QualificationsDTO dto) {
+    public RequestDTO createQualifications(@RequestBody RequestDTO dto) {
     
      return qualificationsService.saveQualifications(dto);
 
