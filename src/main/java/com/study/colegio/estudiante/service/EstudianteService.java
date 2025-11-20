@@ -20,14 +20,14 @@ public class EstudianteService {
     @Autowired
     private MapperEstudiante studientMapper;
 
-    public List<EstudianteDTO> getAllStudients(){
+    public List<EstudianteDTO> obtenerTodosEstudiantes(){
         return studientRepository.findAll().stream()
         .map(studientMapper::toDTO)
         .collect(Collectors.toList());
     }
 
 
-    public EstudianteDTO saveStudient(EstudianteDTO studientDTO){
+    public EstudianteDTO guardarEstudiante(EstudianteDTO studientDTO){
         EstudianteEntity studientEntity = studientMapper.toEntity(studientDTO);
         return studientMapper.toDTO(studientRepository.save(studientEntity));
     }

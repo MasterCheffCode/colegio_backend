@@ -22,13 +22,13 @@ public class EstudianteController {
 
     @GetMapping
     public List<EstudianteDTO> getStudients() {
-        return studientService.getAllStudients();
+        return studientService.obtenerTodosEstudiantes();
     }
 
     @PostMapping
     public EstudianteDTO createStudient(@RequestBody EstudianteDTO studient) {
         
-        return studientService.saveStudient(studient);
+        return studientService.guardarEstudiante(studient);
     }
 
   
